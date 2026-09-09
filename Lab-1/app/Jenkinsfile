@@ -1,0 +1,64 @@
+// Jenkinsfile - Declarative Pipeline
+// Task 5: Defines Build -> Test -> Deploy stages for the sample Node.js app.
+
+pipeline {
+    agent any
+
+    triggers {
+        // Polls the GitHub repo every 2 minutes for new commits.
+        // (In Task 1/4 you can replace this with a GitHub webhook instead.)
+        pollSCM('H/2 * * * *')
+    }
+
+    environment {
+        APP_NAME = 'lab1-devops-app'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                echo 'Cloning source code from GitHub...'
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building the application...'
+                dir('app') {
+                    bat 'echo Build stage: verifying project files'
+                    bat 'node -v'
+                    bat 'npm -v'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running automated tests...'
+                dir('app') {
+                    bat 'npm test'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                dir('app') {
+                    bat 'call deploy.bat'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully. Application deployed.'
+        }
+        failure {
+            echo 'Pipeline failed. Check console output above.'
+        }
+    }
+}

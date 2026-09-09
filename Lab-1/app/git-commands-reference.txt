@@ -1,0 +1,37 @@
+Lab 1 - Task 3: Git command reference
+Run these from: PS C:\Users\gurno\Desktop\devops\Lab-1>
+
+1) Initialize repository
+   git init
+
+2) Configure identity (once per machine, Task 2)
+   git config --global user.name "Your Name"
+   git config --global user.email "you@example.com"
+
+3) Check status / stage / commit
+   git status
+   git add .
+   git commit -m "Initial commit: add Lab 1 sample app"
+
+4) Create and switch to a feature branch
+   git branch feature-update
+   git checkout feature-update
+   (or in one step: git checkout -b feature-update)
+
+5) Make a change on the branch, then commit it
+   git add .
+   git commit -m "Update app on feature-update branch"
+
+6) Merge the branch back into main
+   git checkout main
+   git merge feature-update
+
+7) Connect to GitHub and push
+   git remote add origin https://github.com/<your-username>/lab1-devops-app.git
+   git branch -M main
+   git push -u origin main
+
+8) Useful verification commands (good screenshot material)
+   git log --oneline --graph --all
+   git branch -a
+   git remote -v
